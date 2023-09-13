@@ -27,6 +27,16 @@ importers:
         specifier: ^5.2.2
         version: 5.2.2
 
+  packages/sst-remix:
+    dependencies:
+      '@remix-run/node':
+        specifier: 2.0.0-pre.7
+        version: 2.0.0-pre.7(typescript@5.2.2)
+    devDependencies:
+      '@types/aws-lambda':
+        specifier: ^8.10.119
+        version: 8.10.119
+
   web:
     dependencies:
       '@remix-run/css-bundle':
@@ -41,6 +51,9 @@ importers:
       '@remix-run/react':
         specifier: 2.0.0-pre.7
         version: 2.0.0-pre.7(react-dom@18.2.0)(react@18.2.0)(typescript@5.2.2)
+      '@sst/remix':
+        specifier: workspace:^
+        version: link:../packages/sst-remix
       compression:
         specifier: ^1.7.4
         version: 1.7.4

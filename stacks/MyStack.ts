@@ -1,5 +1,5 @@
 import { Config, StackContext } from 'sst/constructs'
-import { CustomRemixSite } from '../constructs/CustomRemixSite'
+import { RemixSite } from '../constructs/RemixSite'
 
 export function API({ stack }: StackContext) {
   const coolInjectedSstParam = new Config.Parameter(
@@ -10,9 +10,11 @@ export function API({ stack }: StackContext) {
     }
   )
 
-  const web = new CustomRemixSite(stack, 'site', {
+  const web = new RemixSite(stack, 'site', {
     path: 'web',
     bind: [coolInjectedSstParam],
+    lambdaHandler: 'server.handler',
+    edgeHandler: '<not implemented>',
   })
 
   stack.addOutputs({

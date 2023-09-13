@@ -1,8 +1,10 @@
 {
   "extends": "@tsconfig/node16/tsconfig.json",
-  "exclude": ["web", "packages"],
   "compilerOptions": {
     "module": "esnext",
     "moduleResolution": "bundler",
+
+    // Include DOM libs as a hacky way to get fetch types in global scope
+    "lib": ["DOM", "DOM.Iterable"],
   }
 }

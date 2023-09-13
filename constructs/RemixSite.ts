@@ -1,19 +1,27 @@
 import path from 'node:path'
 import { SsrFunction } from 'sst/constructs/SsrFunction.js'
-import { SsrSite } from 'sst/constructs/SsrSite.js'
+import { SsrSite, SsrSiteProps } from 'sst/constructs/SsrSite.js'
+import { Construct } from 'constructs'
 
-/**
- * The `CustomRemixSite` construct is patched version of SST's `RemixSite` construct which allows
- * for ESM builds with a custom server.
- *
- * The construct assumes that:
- *
- * - Your Remix config uses the default `assetsBuildDirectory` ('public/build') and `publicPath`
- *   ('/build/')
- * - Your server build is in ESM format
- * - Your Lambda server handler is `<RemixAppDir>/server/lambda.handler`
- */
-export class CustomRemixSite extends SsrSite {
+interface RemixSiteProps extends SsrSiteProps {
+  lambdaHandler: string // probably want both of these to be optional
+  edgeHandler: string
+}
+
+export class RemixSite extends SsrSite {
+  private lambdaHandler: string
+  private edgeHandler: string
+
+  constructor(
+    scope: Construct,
+    id: string,
+    { lambdaHandler, edgeHandler, ...ssrSiteProps }: RemixSiteProps
+  ) {
+    super(scope, id, ssrSiteProps)
+    this.lambdaHandler = lambdaHandler
+    this.edgeHandler = edgeHandler
+  }
+
   protected initBuildConfig() {
     return {
       typesPath: '.',
@@ -37,7 +45,7 @@ export class CustomRemixSite extends SsrSite {
 
     return new SsrFunction(this, `ServerFunction`, {
       description: 'Server handler for Remix',
-      handler: path.join(this.props.path, 'server', 'lambda.handler'),
+      handler: path.join(this.props.path, this.lambdaHandler),
       runtime,
       memorySize,
       timeout,
@@ -53,6 +61,7 @@ export class CustomRemixSite extends SsrSite {
   }
 
   protected createFunctionForEdge() {
+    // Do something similar for edge with `this.edgeHandler`
     throw new Error('Edge function for CustomRemixSite not implemented')
     return {} as any
   }

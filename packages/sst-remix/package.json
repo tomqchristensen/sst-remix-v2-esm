@@ -1,0 +1,12 @@
+{
+  "name": "@sst/remix",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "@remix-run/node": "2.0.0-pre.7"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.119"
+  }
+}
